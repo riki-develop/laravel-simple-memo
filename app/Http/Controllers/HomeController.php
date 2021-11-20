@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+// Modelをインポート
+use App\Models\memo;
 
 class HomeController extends Controller
 {
@@ -24,5 +26,21 @@ class HomeController extends Controller
     public function index()
     {
         return view('create');
+    }
+
+    // store関数を定義
+    public function store(Request $request)
+    {
+        $posts = $request->all();
+
+        // dump_di の略 → メソッドの引数の取った値を展開して止める
+        // → データの値を確認するデバック関数
+        // dd(\Auth::id());
+
+        // memosテーブルへ紐付け：配列定義
+        Memo::insert(['content' => $posts['content'], 'user_id' => \Auth::id()]);
+
+        // homeにリダイレクト
+        return redirect( route('home') );
     }
 }

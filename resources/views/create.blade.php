@@ -3,7 +3,8 @@
 @section('content')
 <div class="card">
     <div class="card-header">新規メモ作成</div>
-    <form class="card-body" action="/store" method="POST">
+    <!-- route('store')と書くと → /store と出力される（Laravelメソッド） -->
+    <form class="card-body" action="{{ route('store') }}" method="POST">
         <!-- csrfトークン発行：成りすまし送信防止 -->
         @csrf
         <div class="form-group">

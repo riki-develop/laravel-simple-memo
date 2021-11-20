@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+// useを指定しておけば【Route】設定の際に、毎回パスを指定しなくて済む
+use App\Http\Controllers\HomeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,4 +21,7 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/home', [HomeController::class, 'index'])->name('home');
+
+// create.blade.phpのformで入力されるデータのルーティング設定
+Route::post('/store', [HomeController::class, 'store'])->name('store');
