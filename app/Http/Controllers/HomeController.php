@@ -25,6 +25,16 @@ class HomeController extends Controller
      */
     public function index()
     {
+        //ここでメモをDBから取得
+        //ログインしているユーザーの情報のみ取得
+        $memos = Memo::select('memos.*')
+               ->where('user_id', '=', \Auth::id()) //ここでログインユーザー判定
+               ->whereNull('deleted_at')
+               ->orderBy('updated_at', 'DESC') //ASC=小さい順、DESC=大きい順
+               ->get();
+
+        //dd($memos);
+
         return view('create');
     }
 
@@ -33,8 +43,8 @@ class HomeController extends Controller
     {
         $posts = $request->all();
 
-        // dump_di の略 → メソッドの引数の取った値を展開して止める
-        // → データの値を確認するデバック関数
+        // dump_dieの略 → メソッドの引数の取った値を展開して止める
+        // →データの値を確認するデバック関数
         // dd(\Auth::id());
 
         // memosテーブルへ紐付け：配列定義
