@@ -35,7 +35,8 @@ class HomeController extends Controller
 
         //dd($memos);
 
-        return view('create');
+        // compact関数を使ってbladeテンプレートに値を渡す
+        return view('create', compact('memos'));
     }
 
     // store関数を定義
