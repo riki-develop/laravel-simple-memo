@@ -97,7 +97,7 @@
                         <div class="card-body">
                         <!-- HomeControllerから渡された変数を取り出して表示 -->
                         @foreach($memos as $memo)
-                            <a class="card-text d-block">{{ $memo['content'] }}</a>
+                            <a href="/edit/{{$memo['id']}}" class="card-text d-block">{{ $memo['content'] }}</a>
                         @endforeach
                         </div>
                     </div>

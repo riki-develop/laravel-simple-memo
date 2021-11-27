@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 // Modelをインポート
 use App\Models\memo;
+use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
 {
@@ -53,5 +54,24 @@ class HomeController extends Controller
 
         // homeにリダイレクト
         return redirect( route('home') );
+    }
+
+    public function edit($id)
+    {
+        //ここでメモをDBから取得
+        //ログインしているユーザーの情報のみ取得
+        $memos = Memo::select('memos.*')
+               ->where('user_id', '=', \Auth::id()) //ここでログインユーザー判定
+               ->whereNull('deleted_at')
+               ->orderBy('updated_at', 'DESC') //ASC=小さい順、DESC=大きい順
+               ->get();
+
+        //dd($memos);
+
+        // DMemosテーブルの主キーを取得→変数に格納
+        $edit_memo = Memo::find($id);
+
+        // compact関数を使ってbladeテンプレートに値を渡す
+        return view('edit', compact('memos', 'edit_memo'));
     }
 }

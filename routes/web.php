@@ -25,3 +25,6 @@ Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 // create.blade.phpのformで入力されるデータのルーティング設定
 Route::post('/store', [HomeController::class, 'store'])->name('store');
+
+// メモ編集機能ページへのルーティング設定
+Route::get('/edit/{id}', [HomeController::class, 'edit'])->name('edit');
