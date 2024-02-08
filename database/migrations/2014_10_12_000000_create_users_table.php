@@ -14,7 +14,11 @@ class CreateUsersTable extends Migration
     public function up()
     {
         Schema::create('users', function (Blueprint $table) {
-            $table->id();
+            /** 
+             * デフォルトのままだと新規作成テーブルで定義した外部Key成約と整合性が取れず
+             * エラーになるため【unsignedBigInteger】で再定義
+            */
+            $table->unsignedBigInteger('id', true);
             $table->string('name');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();

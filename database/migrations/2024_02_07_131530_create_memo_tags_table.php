@@ -14,8 +14,13 @@ class CreateMemoTagsTable extends Migration
     public function up()
     {
         Schema::create('memo_tags', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+            // 外部Key成約がある場合は【unsignedBigInteger】で定義する 
+            $table->unsignedBigInteger('memo_id');
+            $table->unsignedBigInteger('tag_id');
+
+            // 外部Key成約
+            $table->foreign('memo_id')->references('id')->on('memos');
+            $table->foreign('tag_id')->references('id')->on('tags');
         });
     }
 
