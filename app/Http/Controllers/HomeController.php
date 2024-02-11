@@ -24,6 +24,20 @@ class HomeController extends Controller
      */
     public function index()
     {
+        /** 
+         * ▼ ここでメモ一覧を取得 
+         * ・ ログインユーザーで絞り込み
+         * ・ deleted_atがNnullだったら表示…論理削除を定義
+         * ・ 出力→　降順
+        */
+        $memos = Memo::select('memos.*')
+            ->where('user_id', '=', \Auth::id())
+            ->whereNull('deleted_at')
+            ->orderBy('updated_at', 'DESC') // ASC=昇順　　DESC=降順
+            ->get();
+
+            dd($memos);
+
         return view('create');
     }
 
