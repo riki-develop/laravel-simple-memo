@@ -36,9 +36,9 @@ class HomeController extends Controller
             ->orderBy('updated_at', 'DESC') // ASC=昇順　　DESC=降順
             ->get();
 
-            dd($memos);
+            // dd($memos);
 
-        return view('create');
+        return view('create', compact('memos'));
     }
 
     public function store(Request $request)
