@@ -79,4 +79,21 @@ class HomeController extends Controller
 
         return view('edit', compact('memos', 'edit_memo'));
     }
+
+    public function update(Request $request)
+    {
+        $posts = $request->all();
+
+        /**
+         * ※注意点：　updateを使う際は「必ず」whereを使う！
+         * 先にwhere()-> で更新行を指定しておかないとすべてのレコードが更新されてしまう
+         */ 
+        Memo::where('id', $posts['memo_id'])->update([
+            'content' => $posts['content'],
+            'user_id' => \Auth::id(),
+        ]);
+
+        return redirect( route('home') );
+    }
+
 }
