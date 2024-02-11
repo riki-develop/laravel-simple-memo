@@ -63,12 +63,6 @@ class HomeController extends Controller
 
     public function edit($id)
     {
-        /** 
-         * ▼ 
-         * ・ 
-         * ・ 
-         * ・ 
-        */
         $memos = Memo::select('memos.*')
             ->where('user_id', '=', \Auth::id())
             ->whereNull('deleted_at')
@@ -96,4 +90,18 @@ class HomeController extends Controller
         return redirect( route('home') );
     }
 
+    public function destroy(Request $request)
+    {
+        $posts = $request->all();
+
+        /**
+         * ※注意点
+         * delete文ではなく「update」を定義（物理削除ではなく論理削除を指定）
+         */ 
+        Memo::where('id', $posts['memo_id'])->update([
+            'deleted_at' => date("y-m-d H:i:s", time())
+        ]);
+
+        return redirect( route('home') );
+    }
 }
