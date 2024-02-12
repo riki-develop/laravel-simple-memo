@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Memo;
+use App\Models\Tag;
+use App\Models\MemoTag;
+use DB;
 
 class HomeController extends Controller
 {
@@ -49,14 +52,34 @@ class HomeController extends Controller
         */
         $posts = $request->all();
 
-        // dump_dieの略 -> メソッドの引数に取った値を展開して止める（デーだの確認をするデバッグ関数）
-        // dd($posts);
+        // ====== ここからトランザクション開始 ======
+        DB::transaction(function() use($posts) {
 
-        // Memoモデルに接続-> ユーザーから受け取ったcontentとuser_idを一致させる
-        Memo::insert([
-            'content' => $posts['content'],
-            'user_id' => \Auth::id()
-        ]);
+            // ここでinsertするのではなく、中間テーブルに登録するためinsertGetIdでmemo_idを取得
+            $memo_id = Memo::insertGetId([
+                'content' => $posts['content'],
+                'user_id' => \Auth::id()
+            ]);
+
+            // ログインユーザーが同じタグを登録していないかexistsを使ってチェック
+            $tag_exists = Tag::where('user_id', '=', \Auth::id())->where('name', '=', $posts['new_tag'])->exists();
+
+            // 新しいタグが入力されている、かつ、すでに登録されているタグが存在しなければ登録
+            if(!empty($posts['new_tag']) && !$tag_exists) {
+                // ここでinsertするのではなく、中間テーブルに登録するためinsertGetIdでtag_idを取得
+                $tag_id = Tag::insertGetId([
+                    'user_id' =>  \Auth::id(),
+                    'name' => $posts['new_tag']
+                ]);
+
+                // ここで上記で取得したmemo_idとtag_idをmemo_tagsテーブルにinsertする
+                MemoTag::insert([
+                    'memo_id' => $memo_id,
+                    'tag_id' => $tag_id
+                ]);
+            }
+        });
+        // ====== ここでトランザクション終了 ======
 
         return redirect( route('home') );
     }

@@ -9,6 +9,7 @@
                 @csrf {{-- なりすまし対策 --}}
                 <textarea class="form-control" name="content" row5="3" placeholder="ここにメモを入力"></textarea>
             </div>
+            <input type="text" name="new_tag" class="form-control w-50 mb-3" placeholder="新しいタグを入力" />
             <button type="submit" class="btn btn-primary">保存</button>
         </form>
     </div>
