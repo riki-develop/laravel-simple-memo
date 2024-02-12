@@ -39,9 +39,19 @@ class HomeController extends Controller
             ->orderBy('updated_at', 'DESC') // ASC=昇順　　DESC=降順
             ->get();
 
-            // dd($memos);
+        /** 
+         * ▼ ここでタグ一覧を取得 
+         * ・ ログインユーザーで絞り込み
+         * ・ deleted_atがNnullだったら表示…論理削除を定義
+         * ・ 出力→　降順
+        */
+        $tags = Tag::where('user_id', '=', \Auth::id())
+            ->whereNull('deleted_at')
+            ->orderBy('id', 'DESC') // ASC=昇順　　DESC=降順
+            ->get();
 
-        return view('create', compact('memos'));
+        //compact関数で取得したデータをviewに配列で渡す
+        return view('create', compact('memos', 'tags'));
     }
 
     public function store(Request $request)
@@ -76,6 +86,14 @@ class HomeController extends Controller
                 MemoTag::insert([
                     'memo_id' => $memo_id,
                     'tag_id' => $tag_id
+                ]);
+            }
+
+            // 既存タグが紐づけられた場合→ memo_tagsテーブルにinsertする
+            foreach($posts['tags'] as $tag) {
+                MemoTag::insert([
+                    'memo_id' => $memo_id,
+                    'tag_id' => $tag
                 ]);
             }
         });
