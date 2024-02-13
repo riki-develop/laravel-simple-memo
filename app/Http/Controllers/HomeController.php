@@ -140,14 +140,47 @@ class HomeController extends Controller
     {
         $posts = $request->all();
 
-        /**
-         * ※注意点：　updateを使う際は「必ず」whereを使う！
-         * 先にwhere()-> で更新行を指定しておかないとすべてのレコードが更新されてしまう
-         */ 
-        Memo::where('id', $posts['memo_id'])->update([
-            'content' => $posts['content'],
-            'user_id' => \Auth::id(),
-        ]);
+        // ====== ここからトランザクション開始 ======
+        DB::transaction(function() use($posts) {
+            /**
+             * ※注意点：　updateを使う際は「必ず」whereを使う！
+             * 先にwhere()-> で更新行を指定しておかないとすべてのレコードが更新されてしまう
+             */ 
+            Memo::where('id', $posts['memo_id'])->update([
+                'content' => $posts['content'],
+                'user_id' => \Auth::id(),
+            ]);
+
+            // 一旦メモとタグの紐付けを解除（物理削除）
+            MemoTag::where('memo_id', '=', $posts['memo_id'])->delete();
+
+            // 再度メモとタグを紐付け
+            foreach($posts['tags'] as $tag) {
+                MemoTag::insert([
+                    'memo_id' => $posts['memo_id'],
+                    'tag_id' => $tag
+                ]);
+            }
+
+            // ログインユーザーが同じタグを登録していないかexistsを使ってチェック
+            $tag_exists = Tag::where('user_id', '=', \Auth::id())->where('name', '=', $posts['new_tag'])->exists();
+
+            // 新しいタグが入力されている、かつ、すでに登録されているタグが存在しなければ登録
+            if(!empty($posts['new_tag']) && !$tag_exists) {
+                // ここでinsertするのではなく、中間テーブルに登録するためinsertGetIdでtag_idを取得
+                $tag_id = Tag::insertGetId([
+                    'user_id' =>  \Auth::id(),
+                    'name' => $posts['new_tag']
+                ]);
+
+                // memo_idとtag_idをmemo_tagsテーブルにinsertする
+                MemoTag::insert([
+                    'memo_id' => $posts['memo_id'],
+                    'tag_id' => $tag_id
+                ]);
+            }
+        });
+        // ====== ここでトランザクション終了 ======
 
         return redirect( route('home') );
     }
