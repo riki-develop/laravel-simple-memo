@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use App\Models\Memo;
+use App\Models\Tag;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -36,12 +37,20 @@ class AppServiceProvider extends ServiceProvider
                 ->orderBy('updated_at', 'DESC') // ASC=昇順　　DESC=降順
                 ->get();
 
-                /**
-                 * ▼Viewに渡す処理
-                 * ・第1引数はViewで使う時の命名
-                 * ・第2引数はViewに渡したい変数or配列
-                 */
-                $view->with('memos', $memos);
+            /**
+             * タグ絞り込み機能実装に当たり、ここで定義→Viewに渡す
+             */
+            $tags = Tag::where('user_id', '=', \Auth::id())
+                ->whereNull('deleted_at')
+                ->orderBy('id', 'DESC')
+                ->get();
+
+            /**
+             * ▼Viewに渡す処理
+             * ・第1引数はViewで使う時の命名
+             * ・第2引数はViewに渡したい変数or配列
+             */
+            $view->with('memos', $memos)->with('tags', $tags);
         });
     }
 }
