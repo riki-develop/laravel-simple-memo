@@ -28,18 +28,6 @@ class HomeController extends Controller
     public function index()
     {
         /** 
-         * ▼ ここでメモ一覧を取得 
-         * ・ ログインユーザーで絞り込み
-         * ・ deleted_atがNnullだったら表示…論理削除を定義
-         * ・ 出力→　降順
-        */
-        $memos = Memo::select('memos.*')
-            ->where('user_id', '=', \Auth::id())
-            ->whereNull('deleted_at')
-            ->orderBy('updated_at', 'DESC') // ASC=昇順　　DESC=降順
-            ->get();
-
-        /** 
          * ▼ ここでタグ一覧を取得 
          * ・ ログインユーザーで絞り込み
          * ・ deleted_atがNnullだったら表示…論理削除を定義
@@ -51,7 +39,7 @@ class HomeController extends Controller
             ->get();
 
         //compact関数で取得したデータをviewに配列で渡す
-        return view('create', compact('memos', 'tags'));
+        return view('create', compact('tags'));
     }
 
     public function store(Request $request)
@@ -106,12 +94,6 @@ class HomeController extends Controller
 
     public function edit($id)
     {
-        $memos = Memo::select('memos.*')
-            ->where('user_id', '=', \Auth::id())
-            ->whereNull('deleted_at')
-            ->orderBy('updated_at', 'DESC') // ASC=昇順　　DESC=降順
-            ->get();
-
         // leftJoinを使ってmemosテーブルとtagsテーブルを紐づけ
         $edit_memo = Memo::select('memos.*', 'tags.id AS tag_id')
             ->leftJoin('memo_tags', 'memo_tags.memo_id', '=', 'memos.id')
@@ -133,7 +115,7 @@ class HomeController extends Controller
             ->get();
 
         // 上記で取得したデータをViewにわたす
-        return view('edit', compact('memos', 'edit_memo', 'include_tags', 'tags'));
+        return view('edit', compact('edit_memo', 'include_tags', 'tags'));
     }
 
     public function update(Request $request)
