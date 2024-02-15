@@ -42,13 +42,16 @@ class HomeController extends Controller
         return view('create', compact('tags'));
     }
 
+    /** 
+     * POSTの場合は取りあえずRequestファザードを定義しておく ->　(Request $request)
+     * 引数に定義しておく事でHttpに関わる様々なメソッドが使える様になる
+    */
     public function store(Request $request)
     {
-        /** 
-         * POSTの場合は取りあえずRequestファザードを定義しておく ->　(Request $request)
-         * 引数に定義しておく事でHttpに関わる様々なメソッドが使える様になる
-        */
         $posts = $request->all();
+
+        // バリデーションを定義
+        $request->validate(['content' => 'required']);
 
         // ====== ここからトランザクション開始 ======
         DB::transaction(function() use($posts) {
@@ -121,6 +124,9 @@ class HomeController extends Controller
     public function update(Request $request)
     {
         $posts = $request->all();
+
+        // バリデーションを定義
+        $request->validate(['content' => 'required']);
 
         // ====== ここからトランザクション開始 ======
         DB::transaction(function() use($posts) {
