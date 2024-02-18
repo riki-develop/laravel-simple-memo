@@ -21,6 +21,7 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
     <div id="app">
@@ -94,7 +95,11 @@
                 </div>
                 <div class="col-md-4 p-0">
                     <div class="card">
-                        <div class="card-header">メモ一覧</div>
+                        <div class="card-header">
+                            メモ一覧
+                            <a href="{{ route('home') }}">
+                            <i class="fa-solid fa-circle-plus"></i></a>
+                        </div>
                         <div class="card-body">
                             @foreach ($memos as $memo)
                                 <a href="/edit/{{ $memo['id'] }}" class="card-text d-block">{{ $memo['content'] }}</a>
