@@ -72,6 +72,10 @@
                                     {{ __('Register') }}
                                 </button>
                             </div>
+
+                            <div class="col-md-6 offset-md-4">
+                                <a href="/register/admin">管理者登録はこちら</a>
+                            </div>
                         </div>
                     </form>
                 </div>

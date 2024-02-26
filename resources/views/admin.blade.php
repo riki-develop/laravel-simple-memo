@@ -13,9 +13,17 @@
                             {{ session('status') }}
                         </div>
                     @endif
-
-                    {{ __('You are logged in!') }}
-                    管理者
+                    
+                    <div>登録ユーザー一覧</div>
+                    <ul class="user-list">
+                        @foreach ($users as $user)
+                            <li>
+                                <span>ID：{{ $user->id }}</span><br>
+                                <span>ユーザー名：{{ $user->name }}</span><br>
+                                <span>メールアドレス：{{ $user->email }}</span>
+                            </li>
+                        @endforeach
+                    </ul>
                 </div>
             </div>
         </div>

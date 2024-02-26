@@ -67,6 +67,10 @@
                                         {{ __('Forgot Your Password?') }}
                                     </a>
                                 @endif
+
+                                <div>
+                                    <a href="/login/admin">管理者ログインはこちら</a>
+                                </div>
                             </div>
                         </div>
                     </form>
