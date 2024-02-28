@@ -31,6 +31,7 @@ Route::get('/register/admin', [App\Http\Controllers\Auth\RegisterController::cla
 Route::post('/login/admin', [App\Http\Controllers\Auth\LoginController::class, 'adminLogin']);
 Route::post('/register/admin', [App\Http\Controllers\Auth\RegisterController::class, 'registerAdmin'])->name('admin-register');
 Route::get('/admin', [AdminController::class, 'index'])->middleware('auth:admin')->name('admin-home');
+Route::delete('/admin/deleteUser/{id}', [App\Http\Controllers\AdminController::class, 'deleteUser'])->name('admin.deleteUser');
 
 // パスワードリセットルーティング
 Route::get('password/admin/reset', [App\Http\Controllers\Auth\AdminForgotPasswordController::class, 'showLinkRequestForm'])->name('admin.password.request');

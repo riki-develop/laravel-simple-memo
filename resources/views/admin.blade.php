@@ -15,15 +15,29 @@
                     @endif
                     
                     <div>登録ユーザー一覧</div>
-                    <ul class="user-list">
+                    <table>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Actions</th>
+                        </tr>
                         @foreach ($users as $user)
-                            <li>
-                                <span>ID：{{ $user->id }}</span><br>
-                                <span>ユーザー名：{{ $user->name }}</span><br>
-                                <span>メールアドレス：{{ $user->email }}</span>
-                            </li>
+                        <tr>
+                            <td>{{ $user->id }}</td>
+                            <td>{{ $user->name }}</td>
+                            <td>{{ $user->email }}</td>
+                            <td>
+                                <form action="{{ route('admin.deleteUser', $user->id) }}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger">削除</button>
+                                </form>
+                            </td>
+                        </tr>
                         @endforeach
-                    </ul>
+                    </table>
+
                 </div>
             </div>
         </div>
