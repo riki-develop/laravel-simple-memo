@@ -1,8 +1,10 @@
-function deleteHandle(event) {
-    // 一旦formの動きを止める
-    event.preventDefault()
+const deleteHandle = (e) => {
+    e.preventDefault()
 
-    window.confirm('本当に削除していいですか？')
-        ? document.getElementById('delete-form').submit()
-        : alert('キャンセルしました');
+    if(window.confirm('本当に削除していいですか？')) {
+        const form = event.target.closest('.delete-form')
+        form.submit()
+    }else{
+        alert('キャンセルしました')
+    }
 }

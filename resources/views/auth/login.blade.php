@@ -5,10 +5,15 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">{{ __('Login') }}</div>
+                <div class="card-header">{{ isset($authgroup) ? ucwords($authgroup) : ""}} {{ __('Login') }}</div>
 
                 <div class="card-body">
+                    @isset($authgroup)
+                    <form method="POST" action="{{ url("login/$authgroup") }}">
+                    @else
                     <form method="POST" action="{{ route('login') }}">
+                    @endisset
+
                         @csrf
 
                         <div class="row mb-3">
@@ -57,11 +62,15 @@
                                     {{ __('Login') }}
                                 </button>
 
-                                @if (Route::has('password.request'))
-                                    <a class="btn btn-link" href="{{ route('password.request') }}">
+                                @if (Route::has(isset($authgroup) ? $authgroup.'.password.request' : 'password.request'))
+                                    <a class="btn btn-link" href="{{ route(isset($authgroup) ? $authgroup.'.password.request' : 'password.request') }}">
                                         {{ __('Forgot Your Password?') }}
                                     </a>
                                 @endif
+
+                                <div>
+                                    <a href="/login/admin">管理者ログインはこちら</a>
+                                </div>
                             </div>
                         </div>
                     </form>

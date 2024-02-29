@@ -44,22 +44,40 @@
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ms-auto">
                         <!-- Authentication Links -->
-                        @guest
+                        @if(!Auth::check() && (!isset($authgroup) || !Auth::guard($authgroup)->check()))
                             @if (Route::has('login'))
                                 <li class="nav-item">
+                                    @isset($authgroup)
+                                    <a class="nav-link" href="{{ url("login/$authgroup") }}">{{ __('Login') }}</a>
+                                    @else
                                     <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                                    @endisset
                                 </li>
                             @endif
 
+                            @if (Route::has('register'))
+                            @isset($authgroup)
+                            @if (Route::has("$authgroup-register"))
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route("$authgroup-register") }}">{{ __('Register') }}</a>
+                                </li>
+                            @endif
+                            @else
                             @if (Route::has('register'))
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
                                 </li>
                             @endif
+                            @endisset
+                            @endif
                         @else
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                    @isset($authgroup)
+                                    {{ Auth::guard($authgroup)->user()->name }}
+                                    @else
                                     {{ Auth::user()->name }}
+                                    @endisset
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
