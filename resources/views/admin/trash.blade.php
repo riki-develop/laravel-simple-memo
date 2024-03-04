@@ -5,6 +5,8 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
+                <div class="card-header">管理者：{{ __('Dashboard') }}</div>
+
                 <div class="card-body">
                     @if (session('success'))
                         <div class="alert alert-success">
@@ -12,13 +14,13 @@
                         </div>
                     @endif
 
-                    <div>ゴミ箱</div>
-                    <table>
-                        <tr>
-                            <th>ID</th>
-                            <th>Name</th>
-                            <th>Email</th>
-                            <th>Actions</th>
+                    <div>ゴミ箱一覧</div>
+                    <table class="table">
+                        <tr class="thead-dark">
+                            <th scope="col">ID</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Actions</th>
                         </tr>
                         @foreach ($users as $user)
                         <tr>
