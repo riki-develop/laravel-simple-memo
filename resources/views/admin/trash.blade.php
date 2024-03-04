@@ -23,7 +23,7 @@
                             <th scope="col">Actions</th>
                         </tr>
                         @foreach ($users as $user)
-                        <tr>
+                        <tr class="align-middle">
                             <td>{{ $user->id }}</td>
                             <td>{{ $user->name }}</td>
                             <td>{{ $user->email }}</td>

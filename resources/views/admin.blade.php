@@ -37,7 +37,7 @@
                         </thead>
                         <tbody>
                             @foreach ($users as $user)
-                            <tr>
+                            <tr class="align-middle">
                                 <td>{{ $user->id }}</td>
                                 <td>{{ $user->name }}</td>
                                 <td>{{ $user->email }}</td>
@@ -45,8 +45,8 @@
                                     <form class="delete-form" action="{{ route('admin.deleteUser', $user->id) }}" method="POST">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure?')">
-                                            <i class="fa-solid fa-trash"></i> Delete
+                                        <button type="submit" class="btn btn-danger" onclick="return confirm('ゴミ箱に移動します')">
+                                            <i class="fa-solid fa-trash"></i> 削除
                                         </button>
                                     </form>
                                 </td>
