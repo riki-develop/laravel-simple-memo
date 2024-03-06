@@ -15,7 +15,11 @@
                 <i class="fa-solid fa-trash me-3" onclick="deleteHandle(event);"></i>
             </form>
         </div>
+
         <form class="card-body my-card-body" action="{{ route('update') }}" method="POST">
+            <div class="text-secondary text-end">作成日：{{ $edit_memo[0]->created_at->format('Y/m/d') }}</div>
+            <div class="text-secondary text-end mb-2">更新日：{{ $edit_memo[0]->updated_at->format('Y/m/d') }}</div>
+
             <div class="form-group mb-3">
                 @csrf {{-- なりすまし対策 --}}
                 <input type="hidden" name="memo_id" value="{{ $edit_memo[0]['id'] }}" />
@@ -36,7 +40,7 @@
 
             <input type="text" name="new_tag" class="form-control w-50 mb-3" placeholder="新しいタグを入力" />
 
-            <div class="text-end">
+            <div class="text-start">
                 <button type="submit" class="btn btn-primary">更新</button>
             </div>
         </form>

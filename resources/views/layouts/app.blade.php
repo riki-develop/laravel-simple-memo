@@ -31,6 +31,7 @@
                 <a class="navbar-brand" href="{{ url('/') }}">
                     {{ config('app.name', 'Laravel') }}
                 </a>
+
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -81,6 +82,10 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                    <a class="btn btn-link" href="{{ route('contact.form') }}">
+                                        お問い合わせ
+                                    </a>
+
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
@@ -105,9 +110,9 @@
                     <div class="card">
                         <div class="card-header">タグ一覧</div>
                         <div class="card-body my-card-body">
-                            <a href="/" class="card-text d-block mb-2">すべて表示</a>
+                            <a href="/" class="btn btn-outline-warning mb-2">#すべて表示</a>
                             @foreach ($tags as $tag)
-                                <a href="/?tag={{ $tag['id'] }}" class="card-text d-block elipsis mb-2">{{ $tag['name'] }}</a>
+                                <a href="/?tag={{ $tag['id'] }}" class="btn btn-outline-info mb-2">#{{ $tag['name'] }}</a>
                             @endforeach
                         </div>
                     </div>
@@ -121,7 +126,7 @@
                         </div>
                         <div class="card-body my-card-body">
                             @foreach ($memos as $memo)
-                                <a href="/edit/{{ $memo['id'] }}" class="card-text d-block elipsis mb-2">{{ $memo['content'] }}</a>
+                                <a href="/edit/{{ $memo['id'] }}" class="link-secondary d-block elipsis mb-2"><span class="fw-bold">{{ $memo->updated_at->format('Y/m/d') }}：</span>{{ $memo['content'] }}</a>
                             @endforeach
                         </div>
                     </div>
